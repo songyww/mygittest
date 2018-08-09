@@ -162,7 +162,7 @@ print_op_shape(y_conv_2)
 cost = tf.reduce_mean(-tf.reduce_sum(y * tf.log(y_conv_2), axis=1))
 #print ("cross_entroy:",cross_entroy)
 global_step = tf.Variable(0, trainable=False)
-decaylearning_rate = tf.train.exponential_decay(0.00001, global_step, 100, 0.9)
+decaylearning_rate = tf.train.exponential_decay(0.00065, global_step, 80, 0.9)
 train_step = tf.train.AdamOptimizer(decaylearning_rate).minimize(cost,global_step=global_step)
 correct_prediction = tf.equal(tf.argmax(y_conv_2, 1), tf.argmax(y, 1))
 # print_op_shape(correct_prediction)
@@ -178,7 +178,7 @@ tf.train.start_queue_runners(sess=sess)
 #   在Session中添加训练标志
 #   在session中的循环部分,为占位符train添加数值1, 表明当前是训练状态.
 #   因为前面BN函数中已经设定好train为None时,已经认为是测试状态.
-for i in range(40001):  # 20000
+for i in range(51500):  # 20000
     image_batch, label_batch = sess.run([images_train, labels_train])
     label_b = np.eye(100, dtype=float)[label_batch]       #   onehot编码]
     train_step.run(feed_dict={x: image_batch, y: label_b, train: 1}, session=sess)
